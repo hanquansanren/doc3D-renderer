@@ -367,12 +367,7 @@ def prepare_no_env_render():
     scene.view_settings.view_transform='Standard'
 
 
-def render_pass(obj, objpath, texpath):
-    # change output image name to obj file name + texture name + random three
-    # characters (upper lower alphabet and digits)
-    fn = Path(objpath).stem + '-' + Path(texpath).stem + '-' + \
-        ''.join(random.sample(string.ascii_letters + string.digits, 3))
-
+def render_pass(obj, fn):
     scene=bpy.data.scenes['Scene']
     bpy.context.view_layer.use_pass_uv=True
     bpy.context.scene.use_nodes = True
@@ -396,8 +391,8 @@ def render_pass(obj, objpath, texpath):
 
     # save_blend_file
     if save_blend_file:
-        bpy.ops.wm.save_mainfile(filepath=os.path.join(path_to_output_blends, fn+'.blend'),
-            compress=True)
+        bpy.ops.file.make_paths_relative()
+        bpy.ops.wm.save_mainfile(compress=True)
 
     # prepare to render without environment
     prepare_no_env_render()
@@ -419,10 +414,19 @@ def render_pass(obj, objpath, texpath):
     get_worldcoord_img(fn)
     bpy.ops.render.render(write_still=False)
 
-    return fn
 
 def render_img(objpath, texpath):
+    # change output image name to obj file name + texture name + random three
+    # characters (upper lower alphabet and digits)
+    fn = Path(objpath).stem + '-' + Path(texpath).stem + '-' + \
+        ''.join(random.sample(string.ascii_letters + string.digits, 3))
+    
     prepare_scene()
+    if save_blend_file:
+        # save a minimal file to enable the use of make_paths_relative()
+        bpy.ops.wm.save_mainfile(filepath=os.path.join(path_to_output_blends, fn+'.blend'))
+        # remove to avoid creating .blend1 later
+        os.remove(bpy.data.filepath)
     prepare_rendersettings()
     bpy.ops.import_scene.obj(filepath=objpath)
     mesh_name=bpy.data.meshes[0].name
@@ -434,7 +438,7 @@ def render_img(objpath, texpath):
     else:
         #add texture
         page_texturing(mesh, texpath)
-        fn = render_pass(mesh, objpath, texpath)
+        render_pass(mesh, fn)
 
 
 def ensure_abs_paths(csv_items):
