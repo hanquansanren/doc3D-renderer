@@ -102,8 +102,8 @@ def prepare_rendersettings():
     bpy.ops.object.select_all(action='DESELECT')
     bpy.data.scenes['Scene'].cycles.device='GPU'
     bpy.data.scenes['Scene'].cycles.denoiser='OPTIX'
-    bpy.data.scenes['Scene'].render.resolution_x=448
-    bpy.data.scenes['Scene'].render.resolution_y=448
+    bpy.data.scenes['Scene'].render.resolution_x=4480
+    bpy.data.scenes['Scene'].render.resolution_y=4480
     bpy.data.scenes['Scene'].render.resolution_percentage=100
 
 def position_object(mesh_name):
