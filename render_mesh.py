@@ -98,8 +98,10 @@ def prepare_scene():
 
 
 def prepare_rendersettings():
+    bpy.context.preferences.addons["cycles"].preferences.compute_device_type = "OPTIX"
     bpy.ops.object.select_all(action='DESELECT')
-    bpy.data.scenes['Scene'].cycles.device='CPU'
+    bpy.data.scenes['Scene'].cycles.device='GPU'
+    bpy.data.scenes['Scene'].cycles.denoiser='OPTIX'
     bpy.data.scenes['Scene'].render.resolution_x=448
     bpy.data.scenes['Scene'].render.resolution_y=448
     bpy.data.scenes['Scene'].render.resolution_percentage=100
