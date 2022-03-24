@@ -1,3 +1,9 @@
+# 20220314 update
+## version declaration
+this code can also apply in Blender3.1 in windows10 system, via the following command in CMD:
+``blender.exe -b -P render_mesh.py -- 3 0 15``
+Note you should copy all .csv, assets and .py file to the installation directory !!!
+
 
 # doc3D-renderer
 Doc3D is the first 3D dataset focused on document unwarping with realistic paper warping and renderings.
